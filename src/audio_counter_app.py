@@ -14,16 +14,16 @@ To create a standalone executable on Windows you can use PyInstaller:
     pyinstaller --onefile audio_counter_app.py
 """
 
+import queue
+import random
 import sys
 import threading
 import time
-import queue
-import random
 from dataclasses import dataclass
 
 import numpy as np
-import sounddevice as sd
 import pyttsx3
+import sounddevice as sd
 from PyQt5 import QtCore, QtWidgets
 
 
@@ -57,8 +57,7 @@ class AudioWorker(QtCore.QThread):
         self._running = True
         self.status_update.emit("Listening")
         try:
-            with sd.InputStream(channels=1, callback=self.audio_callback,
-                                samplerate=44100, blocksize=1024):
+            with sd.InputStream(channels=1, callback=self.audio_callback, samplerate=44100, blocksize=1024):
                 while self._running:
                     time.sleep(0.1)
         except Exception as exc:  # pragma: no cover - placeholder
@@ -104,7 +103,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.config = AppConfig()
         self.counter = 0
         self.tts_engine = pyttsx3.init()
-        self.tts_engine.setProperty('volume', self.config.tts_volume)
+        self.tts_engine.setProperty("volume", self.config.tts_volume)
         self._build_ui()
         self.audio_worker = AudioWorker(self.config)
         self.audio_worker.event_detected.connect(self.on_event_detected)
@@ -220,10 +219,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def change_volume(self, value: int):
         self.config.tts_volume = value / 100.0
-        self.tts_engine.setProperty('volume', self.config.tts_volume)
+        self.tts_engine.setProperty("volume", self.config.tts_volume)
 
     def change_language(self, text: str):
-        self.config.language = 'en' if text == 'English' else 'ko'
+        self.config.language = "en" if text == "English" else "ko"
 
     def on_event_detected(self):
         self.counter += 1
@@ -245,14 +244,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def speak_count(self):
         phrases = {
-            'en': {
-                'Laughter': 'You laughed {n} times.',
-                'Screaming': 'You screamed {n} times.'
-            },
-            'ko': {
-                'Laughter': '당신은 {n}번 웃었습니다.',
-                'Screaming': '당신은 {n}번 비명을 질렀습니다.'
-            }
+            "en": {"Laughter": "You laughed {n} times.", "Screaming": "You screamed {n} times."},
+            "ko": {"Laughter": "당신은 {n}번 웃었습니다.", "Screaming": "당신은 {n}번 비명을 질렀습니다."},
         }
         phrase = phrases[self.config.language][self.config.mode].format(n=self.counter)
         threading.Thread(target=self._speak, args=(phrase,), daemon=True).start()

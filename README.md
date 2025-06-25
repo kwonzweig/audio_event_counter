@@ -5,23 +5,36 @@ This project contains a scaffold for a desktop application that detects and coun
 The current implementation includes placeholders for the actual audio classification model. Event detection is simulated using a simple amplitude threshold so that the UI can be tested. All major features are represented in the code and marked with TODO comments where further development is needed.
 
 ## Running
-Install the required dependencies first (for example using `pip`):
+This project uses pip for dependency management. First, create a virtual environment (recommended):
 
 ```bash
-pip install PyQt5 sounddevice pyttsx3 numpy
+python -m venv venv
+venv\Scripts\activate
 ```
 
-Then run the application:
+Then install the project dependencies:
 
 ```bash
-python audio_counter_app.py
+pip install -r requirements.txt
+```
+
+Run the application:
+
+```bash
+python src/audio_counter_app.py
 ```
 
 ## Packaging as an Executable
-To create a standalone Windows executable you can use [PyInstaller](https://pyinstaller.org/):
+To create a standalone Windows executable, first install PyInstaller:
 
 ```bash
-pyinstaller --onefile audio_counter_app.py
+pip install pyinstaller
+```
+
+Then create the executable:
+
+```bash
+pyinstaller --onefile src/audio_counter_app.py
 ```
 
 Adjust the command as needed to include Qt plugins and other resources.

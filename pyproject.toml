@@ -1,0 +1,30 @@
+# pyproject.toml  – drop this in your project root
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "audio-event-counter"
+version = "0.1.0"
+description = "A desktop application that detects and counts audio events in real time"
+authors = ["kwonzweig@gmail.com"]
+readme = "README.md"
+packages = [{ include = "src" }]
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.14.1"
+ruff = "^0.12.0"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+# Enable the rule families you care about;
+# “F” includes F841/F401 (unused vars & imports)
+select = ["E", "F", "B", "I"] # E=pycodestyle, F=pyflakes, B=bugbear, I=isort
+ignore = ["E501"]             # (example) keep long lines for now
+fixable = ["ALL"]             # allow autofix on everything Ruff can handle
+
+[tool.ruff.format]
+quote-style = "double" # Black-compatible defaults otherwise
